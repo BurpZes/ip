@@ -43,7 +43,14 @@ public class Wally {
                     System.out.println(taskings[Integer.parseInt(temp[1]) - 1]);
                 }
             } else if (userInput.matches("unmark \\d")) {
-                
+                String temp[] = userInput.split(" ");
+                if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
+                    System.out.println("Invalid tasking number.");
+                } else {
+                    taskings[Integer.parseInt(temp[1]) - 1].set_status(false);
+                    System.out.println("The following task has been marked as not done yet:");
+                    System.out.println(taskings[Integer.parseInt(temp[1]) - 1]);
+                }
             } else {
                 taskings[tasking_size] = new Task(userInput);
                 tasking_size += 1;
