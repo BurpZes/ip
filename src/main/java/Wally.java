@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class Wally {
     public static void main(String[] args) {
+        String taskings[] = new String[100];
+        int tasking_size = 0;
         String banner = "__        ___    _     _  __   __\n"
             + "\\ \\      / / \\  | |   | | \\ \\ / /\n"
             + " \\ \\ /\\ / / _ \\ | |   | |  \\ V / \n"
@@ -21,10 +23,18 @@ public class Wally {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println("-".repeat(50));
                 break;
+            } else if (userInput.equals("list")) {
+                for (int i = 0; i < tasking_size; i++) {
+                    System.out.println(String.valueOf(i + 1) + ". " + taskings[i]);
+                }
+                System.out.println("-".repeat(50));
             } else {
-                System.out.println(userInput);
+                taskings[tasking_size] = userInput;
+                tasking_size += 1;
+                System.out.println("added: " + userInput);
                 System.out.println("-".repeat(50));
             }
         }
+        myScanner.close();
     }
 }
