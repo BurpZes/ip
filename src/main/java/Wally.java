@@ -43,7 +43,7 @@ public class Wally {
                 } 
                 
                 // mark command
-                else if (userInput.matches("mark \\d")) {
+                else if (userInput.matches("mark \\d+")) {
                     String temp[] = userInput.split(" ");
                     if (taskings.size() == 0) {
                         throw(new EmptyTaskingsException());
@@ -57,7 +57,7 @@ public class Wally {
                 } 
                 
                 // unmark command
-                else if (userInput.matches("unmark \\d")) {
+                else if (userInput.matches("unmark \\d+")) {
                     String temp[] = userInput.split(" ");
                     if (taskings.size() == 0) {
                         throw(new EmptyTaskingsException());
@@ -105,6 +105,22 @@ public class Wally {
                     }
                 } 
                 
+                // delete command
+                else if (userInput.matches("delete \\d+")) {
+                    String temp[] = userInput.split(" ");
+                    if (taskings.size() == 0) {
+                        throw(new EmptyTaskingsException());
+                    } else if (Integer.parseInt(temp[1]) > taskings.size() || Integer.parseInt(temp[1]) < 1) {
+                        throw(new IndexOutOfBoundsException());
+                    } else {
+                        Task currentTask = taskings.get(Integer.parseInt(temp[1]) - 1);
+                        taskings.remove(Integer.parseInt(temp[1]) - 1);
+                        System.out.println("The following task has been removed:");
+                        System.out.println(currentTask);
+                        System.out.println("Now you have " + taskings.size() + " tasks in the list.");
+                    }
+                }
+
                 // everything else
                 else {
                     throw(new InvalidCommandException());
