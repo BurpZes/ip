@@ -52,9 +52,23 @@ public class Wally {
                     System.out.println("The following task has been marked as not done yet:");
                     System.out.println(taskings[Integer.parseInt(temp[1]) - 1]);
                 }
+            } else if (userInput.matches("todo .*")) {
+                String temp = userInput.split("todo ")[1];
+                taskings[tasking_size] = new ToDo(temp);
+                System.out.println("The following task has been added:");
+                System.out.println(taskings[tasking_size]);
+                tasking_size += 1;
+                System.out.println("Now you have " + tasking_size + " tasks in the list.");
             } else if (userInput.matches("deadline .* /by .*")) {
                 String temp[] = userInput.split("deadline ")[1].split(" /by ");
                 taskings[tasking_size] = new Deadline(temp[0], temp[1]);
+                System.out.println("The following task has been added:");
+                System.out.println(taskings[tasking_size]);
+                tasking_size += 1;
+                System.out.println("Now you have " + tasking_size + " tasks in the list.");
+            } else if (userInput.matches("event .* /from .* /to .*")) {
+                String temp[] = userInput.split("event ")[1].split(" /from | /to ");
+                taskings[tasking_size] = new Event(temp[0], temp[1], temp[2]);
                 System.out.println("The following task has been added:");
                 System.out.println(taskings[tasking_size]);
                 tasking_size += 1;
