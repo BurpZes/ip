@@ -2,20 +2,26 @@ import java.util.Scanner;
 
 public class Wally {
     public static void main(String[] args) {
-        String taskings[] = new String[100];
+        Task taskings[] = new Task[100];
         int tasking_size = 0;
+        Scanner myScanner = new Scanner(System.in);
+        String userInput = "";
+
+        // Banner
         String banner = "__        ___    _     _  __   __\n"
             + "\\ \\      / / \\  | |   | | \\ \\ / /\n"
             + " \\ \\ /\\ / / _ \\ | |   | |  \\ V / \n"
             + "  \\ V  V / ___ \\| |___| |___| |  \n"
             + "   \\_/\\_/_/   \\_\\_____|_____|_|  \n";
+
+        // On start
         System.out.println("-".repeat(50));
         System.out.println(banner);
         System.out.println("-".repeat(50));
         System.out.println("Hello! I'm Wally.\nWhat can I do for you?");
         System.out.println("-".repeat(50));
-        Scanner myScanner = new Scanner(System.in);
-        String userInput = "";
+
+        // Looping for user inputs
         while (true) {
             userInput = myScanner.nextLine().strip();
             System.out.println();
@@ -29,12 +35,14 @@ public class Wally {
                 }
                 System.out.println("-".repeat(50));
             } else {
-                taskings[tasking_size] = userInput;
+                taskings[tasking_size] = new Task(userInput);
                 tasking_size += 1;
                 System.out.println("added: " + userInput);
                 System.out.println("-".repeat(50));
             }
         }
+
+        // Cleanup
         myScanner.close();
     }
 }
