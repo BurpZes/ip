@@ -91,13 +91,17 @@ public class Wally {
                 } 
                 
                 // event command
-                else if (userInput.matches("event .* /from .* /to .*")) {
-                    String temp[] = userInput.split("event ")[1].split(" /from | /to ");
-                    taskings[tasking_size] = new Event(temp[0], temp[1], temp[2]);
-                    System.out.println("The following task has been added:");
-                    System.out.println(taskings[tasking_size]);
-                    tasking_size += 1;
-                    System.out.println("Now you have " + tasking_size + " tasks in the list.");
+                else if (userInput.matches("event .*")) {
+                    if (userInput.matches("event .* /from .* /to .*")) {
+                        String temp[] = userInput.split("event ")[1].split(" /from | /to ");
+                        taskings[tasking_size] = new Event(temp[0], temp[1], temp[2]);
+                        System.out.println("The following task has been added:");
+                        System.out.println(taskings[tasking_size]);
+                        tasking_size += 1;
+                        System.out.println("Now you have " + tasking_size + " tasks in the list.");
+                    } else {
+                        throw(new InvalidEventException());
+                    }
                 } 
                 
                 // everything else
@@ -109,6 +113,9 @@ public class Wally {
             } catch (InvalidDeadlineException e) {
                 System.out.println("Invalid format for deadline tasks!");
                 System.out.println("Format: deadline <name> /by <date>");
+            } catch (InvalidEventException e) {
+                System.out.println("Invalid format for event tasks!");
+                System.out.println("Format: event <name> /from <date> /to <date>");
             } finally {
                 System.out.println("-".repeat(50));
             }
