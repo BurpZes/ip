@@ -30,6 +30,7 @@ public class Wally {
                 System.out.println("-".repeat(50));
                 break;
             } else if (userInput.equals("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < tasking_size; i++) {
                     System.out.println(String.valueOf(i + 1) + ". " + taskings[i]);
                 }
@@ -51,6 +52,13 @@ public class Wally {
                     System.out.println("The following task has been marked as not done yet:");
                     System.out.println(taskings[Integer.parseInt(temp[1]) - 1]);
                 }
+            } else if (userInput.matches("deadline .* /by .*")) {
+                String temp[] = userInput.split("deadline ")[1].split(" /by ");
+                taskings[tasking_size] = new Deadline(temp[0], temp[1]);
+                System.out.println("The following task has been added:");
+                System.out.println(taskings[tasking_size]);
+                tasking_size += 1;
+                System.out.println("Now you have " + tasking_size + " tasks in the list.");
             } else {
                 taskings[tasking_size] = new Task(userInput);
                 tasking_size += 1;
