@@ -45,8 +45,10 @@ public class Wally {
                 // mark command
                 else if (userInput.matches("mark \\d")) {
                     String temp[] = userInput.split(" ");
-                    if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
-                        System.out.println("Invalid tasking number.");
+                    if (tasking_size == 0) {
+                        throw(new EmptyTaskingsException());
+                    } else if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
+                        throw(new IndexOutOfBoundsException());
                     } else {
                         taskings[Integer.parseInt(temp[1]) - 1].set_status(true);
                         System.out.println("The following task has been marked as done:");
@@ -57,8 +59,10 @@ public class Wally {
                 // unmark command
                 else if (userInput.matches("unmark \\d")) {
                     String temp[] = userInput.split(" ");
-                    if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
-                        System.out.println("Invalid tasking number.");
+                    if (tasking_size == 0) {
+                        throw(new EmptyTaskingsException());
+                    } else if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
+                        throw(new IndexOutOfBoundsException());
                     } else {
                         taskings[Integer.parseInt(temp[1]) - 1].set_status(false);
                         System.out.println("The following task has been marked as not done yet:");
@@ -116,6 +120,10 @@ public class Wally {
             } catch (InvalidEventException e) {
                 System.out.println("Invalid format for event tasks!");
                 System.out.println("Format: event <name> /from <date> /to <date>");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Enter an index between 1 and " + tasking_size);  
+            } catch (EmptyTaskingsException e) {
+                System.out.println("You have no taskings yet!");  
             } finally {
                 System.out.println("-".repeat(50));
             }
