@@ -33,13 +33,23 @@ public class Wally {
                 for (int i = 0; i < tasking_size; i++) {
                     System.out.println(String.valueOf(i + 1) + ". " + taskings[i]);
                 }
-                System.out.println("-".repeat(50));
+            } else if (userInput.matches("mark \\d")) {
+                String temp[] = userInput.split(" ");
+                if (Integer.parseInt(temp[1]) > tasking_size || Integer.parseInt(temp[1]) < 1) {
+                    System.out.println("Invalid tasking number.");
+                } else {
+                    taskings[Integer.parseInt(temp[1]) - 1].set_status(true);
+                    System.out.println("The following task has been marked as done:");
+                    System.out.println(taskings[Integer.parseInt(temp[1]) - 1]);
+                }
+            } else if (userInput.matches("unmark \\d")) {
+                
             } else {
                 taskings[tasking_size] = new Task(userInput);
                 tasking_size += 1;
                 System.out.println("added: " + userInput);
-                System.out.println("-".repeat(50));
             }
+            System.out.println("-".repeat(50));
         }
 
         // Cleanup
