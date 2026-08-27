@@ -19,7 +19,7 @@ public class Save {
 
         if (Files.isRegularFile(path)) {
             try (Stream<String> lines = Files.lines(path)) {
-                
+                lines.reduce("", (x, y) -> (Parser.processCommand(y, tasklist) ? x : x));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
