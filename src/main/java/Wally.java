@@ -1,9 +1,8 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Wally {
     public static void main(String[] args) {
-        ArrayList<Task> taskings = new ArrayList<>();
+        Tasklist taskings = new Tasklist();
         Scanner myScanner = new Scanner(System.in);
         String userInput = "";
 
@@ -37,56 +36,56 @@ public class Wally {
                 // list tasks
                 else if (userInput.equals("list")) {
                     System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < taskings.size(); i++) {
-                        System.out.println(String.valueOf(i + 1) + ". " + taskings.get(i));
+                    for (int i = 0; i < taskings.getSize(); i++) {
+                        System.out.println(String.valueOf(i + 1) + ". " + taskings.getTask(i + 1));
                     }
                 } 
                 
                 // mark command
                 else if (userInput.matches("mark \\d+")) {
                     String temp[] = userInput.split(" ");
-                    if (taskings.size() == 0) {
+                    if (taskings.getSize() == 0) {
                         throw(new EmptyTaskingsException());
-                    } else if (Integer.parseInt(temp[1]) > taskings.size() || Integer.parseInt(temp[1]) < 1) {
+                    } else if (Integer.parseInt(temp[1]) > taskings.getSize() || Integer.parseInt(temp[1]) < 1) {
                         throw(new IndexOutOfBoundsException());
                     } else {
-                        taskings.get(Integer.parseInt(temp[1]) - 1).set_status(true);
+                        taskings.getTask(Integer.parseInt(temp[1])).set_status(true);
                         System.out.println("The following task has been marked as done:");
-                        System.out.println(taskings.get(Integer.parseInt(temp[1]) - 1));
+                        System.out.println(taskings.getTask(Integer.parseInt(temp[1])));
                     }
                 } 
                 
                 // unmark command
                 else if (userInput.matches("unmark \\d+")) {
                     String temp[] = userInput.split(" ");
-                    if (taskings.size() == 0) {
+                    if (taskings.getSize() == 0) {
                         throw(new EmptyTaskingsException());
-                    } else if (Integer.parseInt(temp[1]) > taskings.size() || Integer.parseInt(temp[1]) < 1) {
+                    } else if (Integer.parseInt(temp[1]) > taskings.getSize() || Integer.parseInt(temp[1]) < 1) {
                         throw(new IndexOutOfBoundsException());
                     } else {
-                        taskings.get(Integer.parseInt(temp[1]) - 1).set_status(false);
+                        taskings.getTask(Integer.parseInt(temp[1])).set_status(false);
                         System.out.println("The following task has been marked as not done yet:");
-                        System.out.println(taskings.get(Integer.parseInt(temp[1]) - 1));
+                        System.out.println(taskings.getTask(Integer.parseInt(temp[1])));
                     }
                 } 
                 
                 // todo command
                 else if (userInput.matches("todo .*")) {
                     String temp = userInput.split("todo ")[1];
-                    taskings.add(new ToDo(temp));
+                    taskings.addTask(new ToDo(temp));
                     System.out.println("The following task has been added:");
-                    System.out.println(taskings.get(taskings.size() - 1));
-                    System.out.println("Now you have " + taskings.size() + " tasks in the list.");
+                    System.out.println(taskings.getTask(taskings.getSize()));
+                    System.out.println("Now you have " + taskings.getSize() + " tasks in the list.");
                 } 
                 
                 // deadline command
                 else if (userInput.matches("deadline .*")) {
                     if (userInput.matches("deadline .* /by .*")) {
                         String temp[] = userInput.split("deadline ")[1].split(" /by ");
-                        taskings.add(new Deadline(temp[0], temp[1]));
+                        taskings.addTask(new Deadline(temp[0], temp[1]));
                         System.out.println("The following task has been added:");
-                        System.out.println(taskings.get(taskings.size() - 1));
-                        System.out.println("Now you have " + taskings.size() + " tasks in the list.");
+                        System.out.println(taskings.getTask(taskings.getSize()));
+                        System.out.println("Now you have " + taskings.getSize() + " tasks in the list.");
                     } else {
                         throw(new InvalidDeadlineException());
                     }
@@ -96,10 +95,10 @@ public class Wally {
                 else if (userInput.matches("event .*")) {
                     if (userInput.matches("event .* /from .* /to .*")) {
                         String temp[] = userInput.split("event ")[1].split(" /from | /to ");
-                        taskings.add(new Event(temp[0], temp[1], temp[2]));
+                        taskings.addTask(new Event(temp[0], temp[1], temp[2]));
                         System.out.println("The following task has been added:");
-                        System.out.println(taskings.get(taskings.size() - 1));
-                        System.out.println("Now you have " + taskings.size() + " tasks in the list.");
+                        System.out.println(taskings.getTask(taskings.getSize()));
+                        System.out.println("Now you have " + taskings.getSize() + " tasks in the list.");
                     } else {
                         throw(new InvalidEventException());
                     }
@@ -108,16 +107,16 @@ public class Wally {
                 // delete command
                 else if (userInput.matches("delete \\d+")) {
                     String temp[] = userInput.split(" ");
-                    if (taskings.size() == 0) {
+                    if (taskings.getSize() == 0) {
                         throw(new EmptyTaskingsException());
-                    } else if (Integer.parseInt(temp[1]) > taskings.size() || Integer.parseInt(temp[1]) < 1) {
+                    } else if (Integer.parseInt(temp[1]) > taskings.getSize() || Integer.parseInt(temp[1]) < 1) {
                         throw(new IndexOutOfBoundsException());
                     } else {
-                        Task currentTask = taskings.get(Integer.parseInt(temp[1]) - 1);
-                        taskings.remove(Integer.parseInt(temp[1]) - 1);
+                        Task currentTask = taskings.getTask(Integer.parseInt(temp[1]));
+                        taskings.removeTask(Integer.parseInt(temp[1]));
                         System.out.println("The following task has been removed:");
                         System.out.println(currentTask);
-                        System.out.println("Now you have " + taskings.size() + " tasks in the list.");
+                        System.out.println("Now you have " + taskings.getSize() + " tasks in the list.");
                     }
                 }
 
@@ -134,7 +133,7 @@ public class Wally {
                 System.out.println("Invalid format for event tasks!");
                 System.out.println("Format: event <name> /from <date> /to <date>");
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Enter an index between 1 and " + taskings.size());  
+                System.out.println("Enter an index between 1 and " + taskings.getSize());  
             } catch (EmptyTaskingsException e) {
                 System.out.println("You have no taskings yet!");  
             } finally {
