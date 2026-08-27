@@ -27,6 +27,7 @@ public class Wally {
             userInput = myScanner.nextLine().strip();
             System.out.println();
             shouldTerminate = Parser.processCommand(userInput, taskings);
+            save.writeToSave(taskings);
         }
 
         // Cleanup
