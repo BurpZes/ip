@@ -6,6 +6,7 @@ public class Wally {
         Scanner myScanner = new Scanner(System.in);
         String userInput = "";
         boolean shouldTerminate = false;
+        Save save = new Save(taskings);
 
         // Banner
         String banner = "__        ___    _     _  __   __\n"
