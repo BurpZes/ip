@@ -1,6 +1,12 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Stores a task with description, starting datetime and ending datetime
+ */
 public class Event extends Task {
-    private String starting;
-    private String ending;
+    private LocalDateTime starting;
+    private LocalDateTime ending;
 
     /**
      * Creates an Event object
@@ -10,13 +16,15 @@ public class Event extends Task {
      */
     public Event(String name, String starting, String ending) {
         super(name);
-        this.starting = starting;
-        this.ending = ending;
+        this.starting = LocalDateTime.parse(starting);
+        this.ending = LocalDateTime.parse(ending);
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.starting + " to: " + this.ending + ")";
+        return "[E]" + super.toString() + " (from: " 
+                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) 
+                + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
     }
 
     @Override
