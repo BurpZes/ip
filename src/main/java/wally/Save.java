@@ -26,6 +26,7 @@ public class Save {
             }
         } else {
             try {
+                Files.createDirectories(PATH.getParent());
                 Files.createFile(PATH);
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
