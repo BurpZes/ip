@@ -4,6 +4,13 @@ package wally;
  * Processes commands and returns the corresponding products
  */
 public class Parser {
+    /**
+     * Processes user inputs and performs the corresponding actions.
+     * Throws exceptions when occurred.
+     * @param command String representing the user input
+     * @param tasklist Tasklist representing the list of Tasks
+     * @return Boolean where true is a signal to close the chatbot and vice versa
+     */
     public static boolean processCommand(String command, Tasklist tasklist) {
         try {
             // Close chatbot

@@ -2,6 +2,9 @@ package wally;
 
 import java.util.Scanner;
 
+/**
+ * Runs a chatbot that stores and displays taskings
+ */
 public class Wally {
     public static void main(String[] args) {
         Tasklist taskings = new Tasklist();

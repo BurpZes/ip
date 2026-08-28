@@ -16,6 +16,7 @@ public class Save {
     /**
      * Loads the task list stored in Saves/save.txt.
      * If the file does not exist, create one.
+     * @param tasklist Tasklist object representing the list of Tasks
      */
     public Save(Tasklist tasklist) {
         if (Files.isRegularFile(PATH)) {

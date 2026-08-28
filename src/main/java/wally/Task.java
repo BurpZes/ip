@@ -1,5 +1,8 @@
 package wally;
 
+/**
+ * Represents a Task with descriptions
+ */
 public class Task {
     private String name;
     private boolean status;
