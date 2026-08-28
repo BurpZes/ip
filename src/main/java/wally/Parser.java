@@ -108,6 +108,17 @@ public class Parser {
                 }
             }
 
+            // list command
+            else if (command.matches("find .*")) {
+                String temp = command.split("find ")[1];
+                System.out.println("Here are the matching tasks in your list:");
+                for (int i = 1; i <= tasklist.getSize(); i++) {
+                    if (tasklist.getTask(i).toString().toLowerCase().contains(temp.toLowerCase())) {
+                        System.out.println(String.valueOf(i) + "." + tasklist.getTask(i));
+                    }
+                }
+            }
+
             // everything else
             else {
                 throw (new InvalidCommandException());

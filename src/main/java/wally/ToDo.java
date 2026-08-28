@@ -20,6 +20,6 @@ public class ToDo extends Task {
 
     @Override
     public String getCommand() {
-        return "ToDo " + super.getCommand();
+        return "todo " + super.getCommand();
     }
 }
