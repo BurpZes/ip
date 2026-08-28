@@ -14,7 +14,7 @@ public class Deadline extends Task {
      */
     public Deadline(String name, String endDate) {
         super(name);
-        this.endDate = LocalDateTime.parse(endDate);
+        this.endDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
     @Override
@@ -25,6 +25,7 @@ public class Deadline extends Task {
 
     @Override
     public String getCommand() {
-        return "deadline " + super.getCommand() + " /by " + this.endDate;
+        return "deadline " + super.getCommand() + " /by " 
+                + this.endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

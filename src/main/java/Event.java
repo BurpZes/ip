@@ -16,8 +16,8 @@ public class Event extends Task {
      */
     public Event(String name, String starting, String ending) {
         super(name);
-        this.starting = LocalDateTime.parse(starting);
-        this.ending = LocalDateTime.parse(ending);
+        this.starting = LocalDateTime.parse(starting, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.ending = LocalDateTime.parse(ending, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
     @Override
@@ -29,6 +29,8 @@ public class Event extends Task {
 
     @Override
     public String getCommand() {
-        return "event " + super.toString() + " /from " + this.starting + " /to " + this.ending;
+        return "event " + super.getCommand() + " /from " 
+                + this.starting.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " /to " 
+                + this.ending.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }
