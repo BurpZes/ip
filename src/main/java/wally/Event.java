@@ -12,9 +12,10 @@ public class Event extends Task {
 
     /**
      * Creates an Event object
-     * @param name String representing the task
+     * 
+     * @param name     String representing the task
      * @param starting String representing the start of the event
-     * @param ending String representing the end of the event
+     * @param ending   String representing the end of the event
      */
     public Event(String name, String starting, String ending) {
         super(name);
@@ -24,15 +25,15 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " 
-                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) 
+        return "[E]" + super.toString() + " (from: "
+                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm"))
                 + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
     }
 
     @Override
     public String getCommand() {
-        return "event " + super.getCommand() + " /from " 
-                + this.starting.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " /to " 
+        return "event " + super.getCommand() + " /from "
+                + this.starting.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " /to "
                 + this.ending.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }
