@@ -1,5 +1,8 @@
 package wally;
 
+/**
+ * Represents a Task with a description and no timing.
+ */
 public class ToDo extends Task {
     /**
      * Creates a ToDo object

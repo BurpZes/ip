@@ -4,7 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests the Tasklist class
+ */
 public class TasklistTest {
+
+    /**
+     * Tests the addTask and getTask methods
+     */
     @Test
     public void addTaskNGetTaskTest() {
         Tasklist taskings = new Tasklist();
