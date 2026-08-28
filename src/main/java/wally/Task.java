@@ -9,6 +9,7 @@ public class Task {
 
     /**
      * Creates a Task object with name as "name" and status as false.
+     * 
      * @param name String representing the Task
      */
     public Task(String name) {
@@ -27,6 +28,7 @@ public class Task {
 
     /**
      * Returns the command used to create this task as a string
+     * 
      * @return A string representing the command
      */
     public String getCommand() {

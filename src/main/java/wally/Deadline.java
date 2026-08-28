@@ -11,7 +11,8 @@ public class Deadline extends Task {
 
     /**
      * Creates a Deadline object
-     * @param name String representing the task
+     * 
+     * @param name    String representing the task
      * @param endDate String representing the due date or deadline
      */
     public Deadline(String name, String endDate) {
@@ -21,13 +22,13 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " 
+        return "[D]" + super.toString() + " (by: "
                 + this.endDate.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
     }
 
     @Override
     public String getCommand() {
-        return "deadline " + super.getCommand() + " /by " 
+        return "deadline " + super.getCommand() + " /by "
                 + this.endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }

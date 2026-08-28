@@ -17,6 +17,7 @@ public class Tasklist {
 
     /**
      * Returns the task in index pos - 1 of taskings.
+     * 
      * @param pos index + 1 to retrieve
      * @return the Task object in pos - 1 index
      */
@@ -26,6 +27,7 @@ public class Tasklist {
 
     /**
      * Returns the number of Tasks in taskings.
+     * 
      * @return Integer representing the number of Tasks in taskings.
      */
     public int getSize() {
@@ -34,6 +36,7 @@ public class Tasklist {
 
     /**
      * Adds task to taskings
+     * 
      * @param task a ToDo, Deadline or Event object
      */
     public void addTask(Task task) {
@@ -42,6 +45,7 @@ public class Tasklist {
 
     /**
      * Removes the Task in pos index from taskings
+     * 
      * @param pos The index of the Task to be removed.
      */
     public void removeTask(int pos) {
