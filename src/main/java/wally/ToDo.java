@@ -1,3 +1,5 @@
+package wally;
+
 public class ToDo extends Task {
     /**
      * Creates a ToDo object

@@ -1,3 +1,5 @@
+package wally;
+
 public class Task {
     private String name;
     private boolean status;

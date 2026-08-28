@@ -1,3 +1,5 @@
+package wally;
+
 import java.util.Scanner;
 
 public class Wally {
