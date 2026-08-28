@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Processes commands and returns the corresponding products
@@ -60,7 +60,7 @@ public class Parser {
             
             // deadline command
             else if (command.matches("deadline .*")) {
-                if (command.matches("deadline .* /by .*")) {
+                if (command.matches("deadline .* /by \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String temp[] = command.split("deadline ")[1].split(" /by ");
                     tasklist.addTask(new Deadline(temp[0], temp[1]));
                     System.out.println("The following task has been added:");
@@ -73,7 +73,7 @@ public class Parser {
             
             // event command
             else if (command.matches("event .*")) {
-                if (command.matches("event .* /from .* /to .*")) {
+                if (command.matches("event .* /from \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d /to \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String temp[] = command.split("event ")[1].split(" /from | /to ");
                     tasklist.addTask(new Event(temp[0], temp[1], temp[2]));
                     System.out.println("The following task has been added:");
@@ -108,10 +108,10 @@ public class Parser {
             System.out.println("Invalid Command Entered!");
         } catch (InvalidDeadlineException e) {
             System.out.println("Invalid format for deadline tasks!");
-            System.out.println("Format: deadline <name> /by <date>");
+            System.out.println("Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>");
         } catch (InvalidEventException e) {
             System.out.println("Invalid format for event tasks!");
-            System.out.println("Format: event <name> /from <date> /to <date>");
+            System.out.println("Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm> /to <date: yyyy-MM-dd> <time: HH:mm>");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Enter an index between 1 and " + tasklist.getSize());  
         } catch (EmptyTaskingsException e) {
