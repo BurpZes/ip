@@ -57,7 +57,7 @@ test {
 }
 
 application {
-    mainClass = 'wally.Wally'
+    mainClass = 'wally.Launcher'
 }
 
 jar {
