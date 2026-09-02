@@ -23,7 +23,7 @@ public class Save {
     public Save(Tasklist tasklist) {
         if (Files.isRegularFile(PATH)) {
             try (Stream<String> lines = Files.lines(PATH)) {
-                lines.reduce("", (x, y) -> (Parser.processCommand(y, tasklist) ? x : x));
+                lines.reduce("", (x, y) -> Parser.processCommand(y, tasklist));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }

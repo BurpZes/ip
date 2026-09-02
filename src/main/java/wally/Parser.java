@@ -7,7 +7,8 @@ public class Parser {
     /**
      * Processes user inputs and performs the corresponding actions.
      * Throws exceptions when occurred.
-     * @param command String representing the user input
+     * 
+     * @param command  String representing the user input
      * @param tasklist Tasklist representing the list of Tasks
      * @return String represnting wally's response
      */
@@ -83,7 +84,7 @@ public class Parser {
                         "event .* /from \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d /to \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String temp[] = command.split("event ")[1].split(" /from | /to ");
                     tasklist.addTask(new Event(temp[0], temp[1], temp[2]));
-                    output = "The following task has been added:\n");
+                    output = "The following task has been added:\n";
                     output += tasklist.getTask(tasklist.getSize()).toString();
                     output += ("\nNow you have " + tasklist.getSize() + " tasks in the list.");
                 } else {
@@ -130,13 +131,12 @@ public class Parser {
             output = "Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>";
         } catch (InvalidEventException e) {
             output = "Invalid format for event tasks!";
-            output = 
-                    "Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm> /to <date: yyyy-MM-dd> <time: HH:mm>";
+            output = "Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm> /to <date: yyyy-MM-dd> <time: HH:mm>";
         } catch (IndexOutOfBoundsException e) {
             output = "Enter an index between 1 and " + tasklist.getSize();
         } catch (EmptyTaskingsException e) {
             output = "You have no tasklist yet!";
-        } 
+        }
         return output;
     }
 }
