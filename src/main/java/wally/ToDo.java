@@ -1,13 +1,13 @@
 package wally;
 
 /**
- * Represents a Task with a description and no timing.
+ * Represents a task with a description and no timing.
  */
 public class ToDo extends Task {
     /**
-     * Creates a ToDo object
-     * 
-     * @param name String representing the task
+     * Creates a to-do task with the specified name.
+     *
+     * @param name Name of the task.
      */
     public ToDo(String name) {
         super(name);

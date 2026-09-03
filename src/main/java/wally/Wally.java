@@ -1,13 +1,18 @@
 package wally;
 
 /**
- * Runs a chatbot that stores and displays taskings
+ * Runs a chatbot that stores and displays tasks.
  */
 public class Wally {
-    private Tasklist taskings = new Tasklist();
-    private Save save = new Save(taskings);
+    private final Tasklist tasks = new Tasklist();
+    private final Save save = new Save(tasks);
     private String output;
 
+    /**
+     * Starts the command-line version of Wally.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         // Banner
         String banner = "__        ___    _     _  __   __\n"
@@ -24,8 +29,8 @@ public class Wally {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String userInput) {
-        output = Parser.processCommand(userInput, taskings);
-        save.writeToSave(taskings);
+        output = Parser.processCommand(userInput, tasks);
+        save.writeToSave(tasks);
         return output;
     }
 }

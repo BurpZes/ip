@@ -8,29 +8,29 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
- * Saves changes to task list and loads task list when chatbot starts
+ * Saves changes to the task list and loads it when the chatbot starts.
  */
 public class Save {
-    public static String SAVE_FILE_PATH = "/wally/Saves/save.txt";
-    private static Path PATH = Path.of(SAVE_FILE_PATH);
+    private static final String SAVE_FILE_PATH = "/wally/Saves/save.txt";
+    private static final Path SAVE_FILE = Path.of(SAVE_FILE_PATH);
 
     /**
      * Loads the task list stored in Saves/save.txt.
-     * If the file does not exist, create one.
-     * 
-     * @param tasklist Tasklist object representing the list of Tasks
+     * If the file does not exist, creates one.
+     *
+     * @param tasklist Task list to load into.
      */
     public Save(Tasklist tasklist) {
-        if (Files.isRegularFile(PATH)) {
-            try (Stream<String> lines = Files.lines(PATH)) {
+        if (Files.isRegularFile(SAVE_FILE)) {
+            try (Stream<String> lines = Files.lines(SAVE_FILE)) {
                 lines.reduce("", (x, y) -> Parser.processCommand(y, tasklist));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
         } else {
             try {
-                Files.createDirectories(PATH.getParent());
-                Files.createFile(PATH);
+                Files.createDirectories(SAVE_FILE.getParent());
+                Files.createFile(SAVE_FILE);
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
@@ -38,9 +38,9 @@ public class Save {
     }
 
     /**
-     * Overwrites the savefile with the contents of tasklist
-     * 
-     * @param tasklist Tasklist object representing the collection of taskings
+     * Overwrites the save file with the contents of the task list.
+     *
+     * @param tasklist Task list to save.
      */
     public void writeToSave(Tasklist tasklist) {
         String contents = "";
@@ -49,7 +49,7 @@ public class Save {
             contents += "\n";
         }
         try {
-            Files.writeString(PATH, contents);
+            Files.writeString(SAVE_FILE, contents);
         } catch (IOException e) {
             System.out.println("Exception caught: " + e);
         }

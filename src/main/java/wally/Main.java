@@ -8,17 +8,20 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * Starts the JavaFX application for Wally.
+ */
 public class Main extends Application {
-    private Wally wally = new Wally();
+    private final Wally wally = new Wally();
 
     @Override
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
-            AnchorPane ap = fxmlLoader.load();
-            Scene scene = new Scene(ap);
+            AnchorPane anchorPane = fxmlLoader.load();
+            Scene scene = new Scene(anchorPane);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setDuke(wally); // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setWally(wally);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

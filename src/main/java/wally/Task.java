@@ -1,37 +1,42 @@
 package wally;
 
 /**
- * Represents a Task with descriptions
+ * Represents a task with a description and completion status.
  */
 public class Task {
     private String name;
-    private boolean status;
+    private boolean isCompleted;
 
     /**
-     * Creates a Task object with name as "name" and status as false.
-     * 
-     * @param name String representing the Task
+     * Creates a task with the specified name and an incomplete status.
+     *
+     * @param name Name of the task.
      */
     public Task(String name) {
         this.name = name;
-        this.status = false;
+        this.isCompleted = false;
     }
 
-    public void set_status(boolean status) {
-        this.status = status;
+    /**
+     * Updates this task's completion status.
+     *
+     * @param isCompleted Whether this task is completed.
+     */
+    public void setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     @Override
     public String toString() {
-        return "[" + (this.status ? "X" : " ") + "] " + this.name;
+        return "[" + (isCompleted ? "X" : " ") + "] " + name;
     }
 
     /**
-     * Returns the command used to create this task as a string
-     * 
-     * @return A string representing the command
+     * Returns the command used to create this task.
+     *
+     * @return Command that creates this task.
      */
     public String getCommand() {
-        return this.name;
+        return name;
     }
 }

@@ -16,8 +16,7 @@ import javafx.scene.layout.HBox;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's
- * face
- * and a label containing text from the speaker.
+ * face and a label containing text from the speaker.
  */
 public class DialogBox extends HBox {
     @FXML
@@ -25,7 +24,7 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
-    private DialogBox(String text, Image img) {
+    private DialogBox(String text, Image image) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -36,7 +35,7 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
-        displayPicture.setImage(img);
+        displayPicture.setImage(image);
     }
 
     /**
@@ -44,19 +43,33 @@ public class DialogBox extends HBox {
      * right.
      */
     private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
+        ObservableList<Node> dialogNodes = FXCollections.observableArrayList(getChildren());
+        Collections.reverse(dialogNodes);
+        getChildren().setAll(dialogNodes);
         setAlignment(Pos.TOP_LEFT);
     }
 
-    public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+    /**
+     * Returns a dialog box for a user message.
+     *
+     * @param text Text of the message.
+     * @param image Image representing the user.
+     * @return Dialog box containing the user message.
+     */
+    public static DialogBox getUserDialog(String text, Image image) {
+        return new DialogBox(text, image);
     }
 
-    public static DialogBox getWallyDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
-        db.flip();
-        return db;
+    /**
+     * Returns a dialog box for a Wally message.
+     *
+     * @param text Text of the message.
+     * @param image Image representing Wally.
+     * @return Dialog box containing the Wally message.
+     */
+    public static DialogBox getWallyDialog(String text, Image image) {
+        DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.flip();
+        return dialogBox;
     }
 }

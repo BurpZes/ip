@@ -24,17 +24,24 @@ public class MainWindow extends AnchorPane {
 
     private Wally wally;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image wallyImage = new Image(this.getClass().getResourceAsStream("/images/DaWally.png"));
+    private final Image userImage = new Image(getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image wallyImage = new Image(getClass().getResourceAsStream("/images/DaWally.png"));
 
+    /**
+     * Initializes the main window after its FXML components are loaded.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
-    public void setDuke(Wally w) {
-        wally = w;
+    /**
+     * Sets the chatbot that processes user input.
+     *
+     * @param wally Chatbot instance.
+     */
+    public void setWally(Wally wally) {
+        this.wally = wally;
     }
 
     /**
