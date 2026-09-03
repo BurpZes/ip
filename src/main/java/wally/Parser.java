@@ -15,21 +15,17 @@ public class Parser {
     public static String processCommand(String command, Tasklist tasklist) {
         String output = "";
         try {
-            // Close chatbot
             if (command.equals("bye")) {
+                // Closes chatbot.
                 output = "TERMINATE_PROGRAM";
-            }
-
-            // list tasks
-            else if (command.equals("list")) {
+            } else if (command.equals("list")) {
+                // Lists tasks.
                 output = "Here are the tasks in your list:";
                 for (int i = 0; i < tasklist.getSize(); i++) {
                     output += ("\n" + String.valueOf(i + 1) + ". " + tasklist.getTask(i + 1));
                 }
-            }
-
-            // mark command
-            else if (command.matches("mark \\d+")) {
+            } else if (command.matches("mark \\d+")) {
+                // Marks a task as done.
                 String[] commandParts = command.split(" ");
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
@@ -41,10 +37,8 @@ public class Parser {
                     output = "The following task has been marked as done:\n";
                     output += tasklist.getTask(Integer.parseInt(commandParts[1])).toString();
                 }
-            }
-
-            // unmark command
-            else if (command.matches("unmark \\d+")) {
+            } else if (command.matches("unmark \\d+")) {
+                // Marks a task as not done.
                 String[] commandParts = command.split(" ");
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
@@ -56,19 +50,15 @@ public class Parser {
                     output = "The following task has been marked as not done yet:\n";
                     output += tasklist.getTask(Integer.parseInt(commandParts[1])).toString();
                 }
-            }
-
-            // todo command
-            else if (command.matches("todo .*")) {
+            } else if (command.matches("todo .*")) {
+                // Adds a to-do task.
                 String taskDescription = command.split("todo ")[1];
                 tasklist.addTask(new ToDo(taskDescription));
                 output = "The following task has been added:\n";
                 output += tasklist.getTask(tasklist.getSize()).toString();
                 output += ("\nNow you have " + tasklist.getSize() + " tasks in the list.");
-            }
-
-            // deadline command
-            else if (command.matches("deadline .*")) {
+            } else if (command.matches("deadline .*")) {
+                // Adds a deadline task.
                 if (command.matches("deadline .* /by \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String[] commandParts = command.split("deadline ")[1].split(" /by ");
                     tasklist.addTask(new Deadline(commandParts[0], commandParts[1]));
@@ -78,10 +68,8 @@ public class Parser {
                 } else {
                     throw (new InvalidDeadlineException());
                 }
-            }
-
-            // event command
-            else if (command.matches("event .*")) {
+            } else if (command.matches("event .*")) {
+                // Adds an event task.
                 if (command.matches(
                         "event .* /from \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d /to \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String[] commandParts = command.split("event ")[1].split(" /from | /to ");
@@ -92,10 +80,8 @@ public class Parser {
                 } else {
                     throw (new InvalidEventException());
                 }
-            }
-
-            // delete command
-            else if (command.matches("delete \\d+")) {
+            } else if (command.matches("delete \\d+")) {
+                // Deletes a task.
                 String[] commandParts = command.split(" ");
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
@@ -109,10 +95,8 @@ public class Parser {
                     output += currentTask.toString();
                     output += ("\nNow you have " + tasklist.getSize() + " tasks in the list.");
                 }
-            }
-
-            // list command
-            else if (command.matches("find .*")) {
+            } else if (command.matches("find .*")) {
+                // Finds matching tasks.
                 String searchTerm = command.split("find ")[1];
                 output = "Here are the matching tasks in your list:";
                 for (int i = 1; i <= tasklist.getSize(); i++) {
@@ -120,10 +104,8 @@ public class Parser {
                         output += ("\n" + String.valueOf(i) + "." + tasklist.getTask(i));
                     }
                 }
-            }
-
-            // everything else
-            else {
+            } else {
+                // Rejects unsupported commands.
                 throw (new InvalidCommandException());
             }
 

@@ -6,7 +6,8 @@ plugins {
 }
 
 checkstyle {
-    toolVersion = ''
+    // Matches the official SE-EDU intermediate Java coding-standard configuration.
+    toolVersion = '11.0.0'
 }
 
 java {
