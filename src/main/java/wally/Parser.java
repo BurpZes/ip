@@ -8,11 +8,12 @@ public class Parser {
      * Processes user input and performs the corresponding action.
      * Handles errors caused by invalid commands.
      *
-     * @param command User input.
+     * @param command  User input.
      * @param tasklist List of tasks to update.
      * @return Wally's response.
      */
     public static String processCommand(String command, Tasklist tasklist) {
+        assert command != null : "Commands passed to the parser must not be null";
         try {
             return executeCommand(command, tasklist);
         } catch (InvalidCommandException e) {
@@ -32,13 +33,14 @@ public class Parser {
     /**
      * Routes a valid command to its command-specific operation.
      *
-     * @param command User input.
+     * @param command  User input.
      * @param tasklist List of tasks to update.
      * @return Response for the executed command.
-     * @throws InvalidCommandException If the command is unsupported.
+     * @throws InvalidCommandException  If the command is unsupported.
      * @throws InvalidDeadlineException If a deadline command has an invalid format.
-     * @throws InvalidEventException If an event command has an invalid format.
-     * @throws EmptyTaskingsException If an indexed operation is attempted on an empty list.
+     * @throws InvalidEventException    If an event command has an invalid format.
+     * @throws EmptyTaskingsException   If an indexed operation is attempted on an
+     *                                  empty list.
      */
     private static String executeCommand(String command, Tasklist tasklist)
             throws InvalidCommandException, InvalidDeadlineException, InvalidEventException,
@@ -124,7 +126,10 @@ public class Parser {
                 + "\nNow you have " + tasklist.getSize() + " tasks in the list.";
     }
 
-    /** Returns the tasks whose string representation contains the requested search term. */
+    /**
+     * Returns the tasks whose string representation contains the requested search
+     * term.
+     */
     private static String findTasks(String command, Tasklist tasklist) {
         String searchTerm = command.split("find ")[1];
         String output = "Here are the matching tasks in your list:";
