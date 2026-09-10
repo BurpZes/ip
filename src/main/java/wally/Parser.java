@@ -1,5 +1,9 @@
 package wally;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Processes commands and returns the corresponding responses.
  */
@@ -49,6 +53,8 @@ public class Parser {
             return "TERMINATE_PROGRAM";
         } else if (command.equals("list")) {
             return listTasks(tasklist);
+        } else if (command.equals("schedule")) {
+            return listTasksByDate(tasklist);
         } else if (command.matches("mark \\d+")) {
             return updateTaskCompletion(command, tasklist, true);
         } else if (command.matches("unmark \\d+")) {
@@ -73,6 +79,28 @@ public class Parser {
         String output = "Here are the tasks in your list:";
         for (int i = 0; i < tasklist.getSize(); i++) {
             output += "\n" + (i + 1) + ". " + tasklist.getTask(i + 1);
+        }
+        return output;
+    }
+
+    /**
+     * Returns tasks ordered by their relevant date-time, followed by to-do tasks.
+     * The displayed numbers remain the tasks' original positions so that they can
+     * be used directly with commands such as {@code mark} and {@code delete}.
+     */
+    private static String listTasksByDate(Tasklist tasklist) {
+        List<Integer> taskPositions = new ArrayList<>();
+        for (int i = 1; i <= tasklist.getSize(); i++) {
+            taskPositions.add(i);
+        }
+
+        taskPositions.sort(Comparator.comparing(
+                position -> tasklist.getTask(position).getScheduleDateTime(),
+                Comparator.nullsLast(Comparator.naturalOrder())));
+
+        String output = "Here are the tasks in your schedule:";
+        for (int position : taskPositions) {
+            output += "\n" + position + ". " + tasklist.getTask(position);
         }
         return output;
     }

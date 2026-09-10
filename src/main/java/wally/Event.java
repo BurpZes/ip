@@ -36,4 +36,9 @@ public class Event extends Task {
                 + this.starting.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + " /to "
                 + this.ending.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
+    @Override
+    public LocalDateTime getScheduleDateTime() {
+        return starting;
+    }
 }
