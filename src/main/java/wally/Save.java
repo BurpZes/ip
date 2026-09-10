@@ -21,7 +21,7 @@ public class Save {
     public Save(Tasklist tasklist) {
         if (Files.isRegularFile(SAVE_FILE)) {
             try (Stream<String> lines = Files.lines(SAVE_FILE)) {
-                lines.reduce("", (x, y) -> Parser.processCommand(y, tasklist));
+                lines.forEach(command -> Parser.processCommand(command, tasklist));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
