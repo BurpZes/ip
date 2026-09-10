@@ -1,5 +1,7 @@
 package wally;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a task with a description and completion status.
  */
@@ -38,5 +40,15 @@ public class Task {
      */
     public String getCommand() {
         return name;
+    }
+
+    /**
+     * Returns the date-time used to place this task in the schedule.
+     * To-do tasks have no date-time and are therefore listed after dated tasks.
+     *
+     * @return The task's schedule date-time, or {@code null} when it has none.
+     */
+    public LocalDateTime getScheduleDateTime() {
+        return null;
     }
 }

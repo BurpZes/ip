@@ -31,4 +31,9 @@ public class Deadline extends Task {
         return "deadline " + super.getCommand() + " /by "
                 + this.endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
+    @Override
+    public LocalDateTime getScheduleDateTime() {
+        return endDate;
+    }
 }
