@@ -13,6 +13,7 @@ public class Parser {
      * @return Wally's response.
      */
     public static String processCommand(String command, Tasklist tasklist) {
+        assert command != null : "Commands passed to the parser must not be null";
         String output = "";
         try {
             if (command.equals("bye")) {
@@ -27,6 +28,7 @@ public class Parser {
             } else if (command.matches("mark \\d+")) {
                 // Marks a task as done.
                 String[] commandParts = command.split(" ");
+                assert commandParts.length == 2 : "A validated mark command has a task position";
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
                 } else if (Integer.parseInt(commandParts[1]) > tasklist.getSize()
@@ -40,6 +42,7 @@ public class Parser {
             } else if (command.matches("unmark \\d+")) {
                 // Marks a task as not done.
                 String[] commandParts = command.split(" ");
+                assert commandParts.length == 2 : "A validated unmark command has a task position";
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
                 } else if (Integer.parseInt(commandParts[1]) > tasklist.getSize()
@@ -61,6 +64,7 @@ public class Parser {
                 // Adds a deadline task.
                 if (command.matches("deadline .* /by \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String[] commandParts = command.split("deadline ")[1].split(" /by ");
+                    assert commandParts.length == 2 : "A validated deadline command has a name and due date";
                     tasklist.addTask(new Deadline(commandParts[0], commandParts[1]));
                     output = "The following task has been added:\n";
                     output += tasklist.getTask(tasklist.getSize()).toString();
@@ -73,6 +77,7 @@ public class Parser {
                 if (command.matches(
                         "event .* /from \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d /to \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
                     String[] commandParts = command.split("event ")[1].split(" /from | /to ");
+                    assert commandParts.length == 3 : "A validated event command has a name, start, and end time";
                     tasklist.addTask(new Event(commandParts[0], commandParts[1], commandParts[2]));
                     output = "The following task has been added:\n";
                     output += tasklist.getTask(tasklist.getSize()).toString();
@@ -83,6 +88,7 @@ public class Parser {
             } else if (command.matches("delete \\d+")) {
                 // Deletes a task.
                 String[] commandParts = command.split(" ");
+                assert commandParts.length == 2 : "A validated delete command has a task position";
                 if (tasklist.getSize() == 0) {
                     throw (new EmptyTaskingsException());
                 } else if (Integer.parseInt(commandParts[1]) > tasklist.getSize()

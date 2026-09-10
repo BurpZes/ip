@@ -22,6 +22,7 @@ public class Tasklist {
      * @return Task at the specified position.
      */
     public Task getTask(int pos) {
+        assert isValidTaskPosition(pos) : "Task positions must be within the current task list";
         return tasks.get(pos - 1);
     }
 
@@ -40,6 +41,7 @@ public class Tasklist {
      * @param task Task to add.
      */
     public void addTask(Task task) {
+        assert task != null : "A task list must not contain null tasks";
         tasks.add(task);
     }
 
@@ -49,6 +51,17 @@ public class Tasklist {
      * @param pos One-based task position.
      */
     public void removeTask(int pos) {
+        assert isValidTaskPosition(pos) : "Task positions must be within the current task list";
         tasks.remove(pos - 1);
+    }
+
+    /**
+     * Checks whether a one-based task position refers to a task in this list.
+     *
+     * @param pos One-based task position.
+     * @return Whether the position is valid for the current list.
+     */
+    private boolean isValidTaskPosition(int pos) {
+        return pos >= 1 && pos <= tasks.size();
     }
 }
