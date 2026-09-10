@@ -4,7 +4,7 @@ package wally;
  * Represents a task with a description and completion status.
  */
 public class Task {
-    private String name;
+    private final String name;
     private boolean isCompleted;
 
     /**
