@@ -3,11 +3,33 @@ package wally;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Processes commands and returns the corresponding responses.
  */
 public class Parser {
+    /**
+     * Validates a background colour and returns its CSS colour name.
+     *
+     * @param colour Colour argument from the background command.
+     * @return Supported CSS colour name, with blue mapped to light blue.
+     * @throws InvalidBackgroundColourException If the colour is unsupported or missing.
+     */
+    public static String parseBackgroundColour(String colour) throws InvalidBackgroundColourException {
+        switch (colour.trim().toLowerCase(Locale.ENGLISH)) {
+            case "black":
+                return "black";
+            case "white":
+                return "white";
+            case "blue":
+            case "light blue":
+                return "lightblue";
+            default:
+                throw new InvalidBackgroundColourException();
+        }
+    }
+
     /**
      * Processes user input and performs the corresponding action.
      * Handles errors caused by invalid commands.
@@ -25,8 +47,7 @@ public class Parser {
         } catch (InvalidDeadlineException e) {
             return "Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>";
         } catch (InvalidEventException e) {
-            return "Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm>"
-                    + " /to <date: yyyy-MM-dd> <time: HH:mm>";
+            return e.getMessage();
         } catch (IndexOutOfBoundsException e) {
             return "Enter an index between 1 and " + tasklist.getSize();
         } catch (EmptyTaskingsException e) {
@@ -42,7 +63,7 @@ public class Parser {
      * @return Response for the executed command.
      * @throws InvalidCommandException  If the command is unsupported.
      * @throws InvalidDeadlineException If a deadline command has an invalid format.
-     * @throws InvalidEventException    If an event command has an invalid format.
+     * @throws InvalidEventException    If an event command has an invalid format or time range.
      * @throws EmptyTaskingsException   If an indexed operation is attempted on an
      *                                  empty list.
      */

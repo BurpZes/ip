@@ -2,6 +2,7 @@ package wally;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Stores a task with a description, start date-time, and end date-time.
@@ -16,18 +17,22 @@ public class Event extends Task {
      * @param name Name of the task.
      * @param starting Start time in the expected date-time format.
      * @param ending End time in the expected date-time format.
+     * @throws InvalidEventException If the start is not strictly before the end.
      */
-    public Event(String name, String starting, String ending) {
+    public Event(String name, String starting, String ending) throws InvalidEventException {
         super(name);
         this.starting = LocalDateTime.parse(starting, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.ending = LocalDateTime.parse(ending, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        if (!this.starting.isBefore(this.ending)) {
+            throw new InvalidEventException("Event start must be before end.");
+        }
     }
 
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: "
-                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm"))
-                + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
+                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH))
+                + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)) + ")";
     }
 
     @Override
