@@ -211,8 +211,9 @@ than inside the project folder. On Windows it resolves on the current drive, for
 example `C:\wally\Saves\save.txt`. Wally needs permission to create and write this
 location. File errors are printed in the terminal.
 
-Currently, completion status is not saved: tasks load as incomplete after a
-restart. Background colour is stored separately in `background.txt` beside the
+Completion status is saved and restored on restart. Completed entries have an
+`[X] ` prefix in the save file; older entries without this prefix load as incomplete.
+Background colour is stored separately in `background.txt` beside the
 task save file. If Wally cannot save a colour, it displays an error and keeps the
 current background. Back up the save file before
 editing it manually; invalid or duplicate task entries are skipped on load.

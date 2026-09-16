@@ -11,6 +11,28 @@ import java.util.Locale;
  */
 public class Parser {
     /**
+     * Loads a task command with an optional completion prefix from storage.
+     * Legacy entries without a prefix remain incomplete. Rejected entries do not
+     * change any existing task's completion status.
+     *
+     * @param entry Saved task entry.
+     * @param tasklist List receiving the task.
+     */
+    public static void parseSavedTask(String entry, Tasklist tasklist) {
+        boolean completed = entry.startsWith("[X] ");
+        String command = completed ? entry.substring(4) : entry;
+        if (!command.startsWith("todo ") && !command.startsWith("deadline ")
+                && !command.startsWith("event ")) {
+            return;
+        }
+        int previousSize = tasklist.getSize();
+        processCommand(command, tasklist);
+        if (tasklist.getSize() > previousSize) {
+            tasklist.getTask(tasklist.getSize()).setCompleted(completed);
+        }
+    }
+
+    /**
      * Validates a background colour and returns its CSS colour name.
      *
      * @param colour Colour argument from the background command.

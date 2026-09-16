@@ -28,6 +28,11 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
+    /** Returns whether this task is completed. */
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
     /** Returns the task description without its type, status, or dates. */
     public String getDescription() {
         return name;

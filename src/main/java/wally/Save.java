@@ -9,7 +9,7 @@ import java.util.stream.Stream;
  * Saves changes to the task list and loads it when the chatbot starts.
  */
 public class Save {
-    private static final String SAVE_FILE_PATH = "/wally/Saves/save.txt";
+    private static final String SAVE_FILE_PATH = "./wally/Saves/save.txt";
     private final Path saveFile;
 
     /**
@@ -27,7 +27,7 @@ public class Save {
         this.saveFile = saveFile;
         if (Files.isRegularFile(saveFile)) {
             try (Stream<String> lines = Files.lines(saveFile)) {
-                lines.forEach(command -> Parser.processCommand(command, tasklist));
+                lines.forEach(entry -> Parser.parseSavedTask(entry, tasklist));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
@@ -49,6 +49,9 @@ public class Save {
     public void writeToSave(Tasklist tasklist) {
         String contents = "";
         for (int i = 0; i < tasklist.getSize(); i++) {
+            if (tasklist.getTask(i + 1).isCompleted()) {
+                contents += "[X] ";
+            }
             contents += tasklist.getTask(i + 1).getCommand();
             contents += "\n";
         }
@@ -59,7 +62,10 @@ public class Save {
         }
     }
 
-    /** Loads a supported background colour, falling back to light blue if unavailable. */
+    /**
+     * Loads a supported background colour, falling back to light blue if
+     * unavailable.
+     */
     public String loadBackground() {
         Path file = saveFile.resolveSibling("background.txt");
         if (!Files.isRegularFile(file)) {

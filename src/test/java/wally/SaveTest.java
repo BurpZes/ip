@@ -18,6 +18,40 @@ public class SaveTest {
     private Path directory;
 
     @Test
+    public void writeToSave_completedTasks_restoresAllTypesAndUnmarking() throws Exception {
+        Path file = directory.resolve("save.txt");
+        Wally wally = new Wally(file);
+        wally.getResponse("todo read");
+        wally.getResponse("deadline submit /by 2026-09-14 12:00");
+        wally.getResponse("event meet /from 2026-09-14 10:00 /to 2026-09-14 11:00");
+        for (int i = 1; i <= 3; i++) {
+            wally.getResponse("mark " + i);
+        }
+        Wally restarted = new Wally(file);
+        assertEquals(wally.getResponse("list"), restarted.getResponse("list"));
+        assertTrue(restarted.getResponse("list").contains("[T][X] read"));
+        restarted.getResponse("unmark 2");
+        restarted.getResponse("delete 1");
+        Wally reloaded = new Wally(file);
+        assertEquals("Here are the tasks in your list:"
+                + "\n1. [D][ ] submit (by: 14 Sep 2026, 12:00)"
+                + "\n2. [E][X] meet (from: 14 Sep 2026, 10:00 to: 14 Sep 2026, 11:00)",
+                reloaded.getResponse("list"));
+    }
+
+    @Test
+    public void constructor_mixedLegacyAndInvalidEntries_preservesCorrectStatuses() throws Exception {
+        Path file = directory.resolve("save.txt");
+        Files.writeString(file, "todo read\n[X] todo READ\n[X] deadline bad /by 2026-02-30 10:00\n"
+                + "[X] todo write\n[X] delete 1\n[invalid] todo ignored\n");
+        Tasklist tasks = new Tasklist();
+        new Save(tasks, file);
+        assertEquals(2, tasks.getSize());
+        assertEquals("[T][ ] read", tasks.getTask(1).toString());
+        assertEquals("[T][X] write", tasks.getTask(2).toString());
+    }
+
+    @Test
     public void constructor_missingFile_createsParentDirectoriesAndEmptyFile() throws Exception {
         Path file = directory.resolve("nested/save.txt");
         Tasklist tasks = new Tasklist();
