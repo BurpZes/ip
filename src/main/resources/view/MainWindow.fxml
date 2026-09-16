@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane minHeight="200.0" minWidth="250.0"
+            stylesheets="@MainWindow.css"
             prefHeight="600.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"

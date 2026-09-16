@@ -3,11 +3,33 @@ package wally;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Processes commands and returns the corresponding responses.
  */
 public class Parser {
+    /**
+     * Validates a background colour and returns its CSS colour name.
+     *
+     * @param colour Colour argument from the background command.
+     * @return Supported CSS colour name, with blue mapped to light blue.
+     * @throws InvalidBackgroundColourException If the colour is unsupported or missing.
+     */
+    public static String parseBackgroundColour(String colour) throws InvalidBackgroundColourException {
+        switch (colour.trim().toLowerCase(Locale.ENGLISH)) {
+            case "black":
+                return "black";
+            case "white":
+                return "white";
+            case "blue":
+            case "light blue":
+                return "lightblue";
+            default:
+                throw new InvalidBackgroundColourException();
+        }
+    }
+
     /**
      * Processes user input and performs the corresponding action.
      * Handles errors caused by invalid commands.

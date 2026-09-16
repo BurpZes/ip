@@ -1,10 +1,29 @@
 package wally;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 public class ParserTest {
+    @Test
+    public void parseBackgroundColour_supportedColours_returnsCssColour() throws InvalidBackgroundColourException {
+        assertEquals("black", Parser.parseBackgroundColour("black"));
+        assertEquals("white", Parser.parseBackgroundColour("white"));
+        assertEquals("lightblue", Parser.parseBackgroundColour("light blue"));
+        assertEquals("lightblue", Parser.parseBackgroundColour("blue"));
+        assertEquals("white", Parser.parseBackgroundColour(" WHITE "));
+    }
+
+    @Test
+    public void parseBackgroundColour_unsupportedOrMissingColour_throwsWithMessage() {
+        for (String colour : new String[] {"red", "", "blue extra", "#000000"}) {
+            InvalidBackgroundColourException exception =
+                    assertThrows(InvalidBackgroundColourException.class, () -> Parser.parseBackgroundColour(colour));
+            assertEquals("Only black, white and blue supported", exception.getMessage());
+        }
+    }
+
     @Test
     public void processCommand_byeCommand_returnsTerminationResponse() {
         assertEquals("TERMINATE_PROGRAM", Parser.processCommand("bye", null));
