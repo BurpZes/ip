@@ -48,6 +48,8 @@ public class Parser {
             return "Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>";
         } catch (InvalidEventException e) {
             return e.getMessage();
+        } catch (DuplicateTaskException e) {
+            return e.getMessage();
         } catch (IndexOutOfBoundsException e) {
             return "Enter an index between 1 and " + tasklist.getSize();
         } catch (EmptyTaskingsException e) {
@@ -62,6 +64,7 @@ public class Parser {
      * @param tasklist List of tasks to update.
      * @return Response for the executed command.
      * @throws InvalidCommandException  If the command is unsupported.
+     * @throws DuplicateTaskException   If the task description already exists.
      * @throws InvalidDeadlineException If a deadline command has an invalid format.
      * @throws InvalidEventException    If an event command has an invalid format or time range.
      * @throws EmptyTaskingsException   If an indexed operation is attempted on an
@@ -69,7 +72,7 @@ public class Parser {
      */
     private static String executeCommand(String command, Tasklist tasklist)
             throws InvalidCommandException, InvalidDeadlineException, InvalidEventException,
-            EmptyTaskingsException {
+            EmptyTaskingsException, DuplicateTaskException {
         if (command.equals("bye")) {
             return "TERMINATE_PROGRAM";
         } else if (command.equals("list")) {
@@ -137,14 +140,15 @@ public class Parser {
     }
 
     /** Adds a to-do task described by a command. */
-    private static String addTodo(String command, Tasklist tasklist) {
+    private static String addTodo(String command, Tasklist tasklist) throws DuplicateTaskException {
         String taskDescription = command.split("todo ")[1];
         tasklist.addTask(new ToDo(taskDescription));
         return getTaskAddedResponse(tasklist);
     }
 
     /** Adds a deadline task described by a command. */
-    private static String addDeadline(String command, Tasklist tasklist) throws InvalidDeadlineException {
+    private static String addDeadline(String command, Tasklist tasklist)
+            throws InvalidDeadlineException, DuplicateTaskException {
         if (!command.matches("deadline .* /by \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
             throw new InvalidDeadlineException();
         }
@@ -155,7 +159,8 @@ public class Parser {
     }
 
     /** Adds an event task described by a command. */
-    private static String addEvent(String command, Tasklist tasklist) throws InvalidEventException {
+    private static String addEvent(String command, Tasklist tasklist)
+            throws InvalidEventException, DuplicateTaskException {
         if (!command.matches("event .* /from \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d"
                 + " /to \\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d")) {
             throw new InvalidEventException();

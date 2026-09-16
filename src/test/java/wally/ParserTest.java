@@ -7,6 +7,30 @@ import org.junit.jupiter.api.Test;
 
 public class ParserTest {
     @Test
+    public void processCommand_duplicateDescriptions_rejectsAllTaskTypes() {
+        Tasklist tasklist = new Tasklist();
+        Parser.processCommand("todo meeting", tasklist);
+        Parser.processCommand("mark 1", tasklist);
+        String[] duplicates = {
+            "todo meeting",
+            "todo  MEETING ",
+            "deadline meeting /by 2026-09-14 12:00",
+            "event meeting /from 2026-09-14 10:00 /to 2026-09-14 11:00"
+        };
+        for (String command : duplicates) {
+            assertEquals("A task with this description already exists.", Parser.processCommand(command, tasklist));
+            assertEquals(1, tasklist.getSize());
+            assertEquals("[T][X] meeting", tasklist.getTask(1).toString());
+        }
+        Parser.processCommand("todo different task", tasklist);
+        assertEquals(2, tasklist.getSize());
+        Parser.processCommand("delete 1", tasklist);
+        Parser.processCommand("todo meeting", tasklist);
+        assertEquals(2, tasklist.getSize());
+        assertEquals("[T][ ] meeting", tasklist.getTask(2).toString());
+    }
+
+    @Test
     public void parseBackgroundColour_supportedColours_returnsCssColour() throws InvalidBackgroundColourException {
         assertEquals("black", Parser.parseBackgroundColour("black"));
         assertEquals("white", Parser.parseBackgroundColour("white"));
@@ -30,7 +54,8 @@ public class ParserTest {
     }
 
     @Test
-    public void processCommand_scheduleCommand_ordersDatedTasksBeforeTodos() throws InvalidEventException {
+    public void processCommand_scheduleCommand_ordersDatedTasksBeforeTodos()
+            throws InvalidEventException, DuplicateTaskException {
         Tasklist tasklist = new Tasklist();
         tasklist.addTask(new ToDo("write report"));
         tasklist.addTask(new Deadline("submit assignment", "2026-09-14 23:59"));
@@ -45,7 +70,7 @@ public class ParserTest {
     }
 
     @Test
-    public void processCommand_eventStartNotBeforeEnd_rejectsWithoutAddingTask() {
+    public void processCommand_eventStartNotBeforeEnd_rejectsWithoutAddingTask() throws DuplicateTaskException {
         Tasklist tasklist = new Tasklist();
         tasklist.addTask(new ToDo("existing task"));
         for (String end : new String[] {"2026-09-12 10:00", "2026-09-12 09:00", "2026-09-11 11:00"}) {
