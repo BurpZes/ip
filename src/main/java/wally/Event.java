@@ -2,6 +2,7 @@ package wally;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Locale;
 
 /**
@@ -21,8 +22,10 @@ public class Event extends Task {
      */
     public Event(String name, String starting, String ending) throws InvalidEventException {
         super(name);
-        this.starting = LocalDateTime.parse(starting, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        this.ending = LocalDateTime.parse(ending, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm")
+                .withResolverStyle(ResolverStyle.STRICT);
+        this.starting = LocalDateTime.parse(starting, formatter);
+        this.ending = LocalDateTime.parse(ending, formatter);
         if (!this.starting.isBefore(this.ending)) {
             throw new InvalidEventException("Event start must be before end.");
         }

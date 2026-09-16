@@ -39,9 +39,15 @@ public class Tasklist {
      * Adds a task to this list.
      *
      * @param task Task to add.
+     * @throws DuplicateTaskException If a description matches ignoring case and surrounding spaces.
      */
-    public void addTask(Task task) {
+    public void addTask(Task task) throws DuplicateTaskException {
         assert task != null : "A task list must not contain null tasks";
+        for (Task existing : tasks) {
+            if (existing.getDescription().trim().equalsIgnoreCase(task.getDescription().trim())) {
+                throw new DuplicateTaskException();
+            }
+        }
         tasks.add(task);
     }
 

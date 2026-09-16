@@ -28,6 +28,11 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
+    /** Returns the task description without its type, status, or dates. */
+    public String getDescription() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "[" + (isCompleted ? "X" : " ") + "] " + name;

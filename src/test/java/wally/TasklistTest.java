@@ -13,7 +13,7 @@ public class TasklistTest {
      * Tests the addTask and getTask methods.
      */
     @Test
-    public void addTask_validTask_taskIsRetrievable() {
+    public void addTask_validTask_taskIsRetrievable() throws DuplicateTaskException {
         Tasklist taskings = new Tasklist();
         ToDo test1 = new ToDo("test1");
         taskings.addTask(test1);

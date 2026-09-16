@@ -2,6 +2,7 @@ package wally;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Locale;
 
 /**
@@ -18,7 +19,8 @@ public class Deadline extends Task {
      */
     public Deadline(String name, String endDate) {
         super(name);
-        this.endDate = LocalDateTime.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.endDate = LocalDateTime.parse(endDate,
+                DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm").withResolverStyle(ResolverStyle.STRICT));
     }
 
     @Override
