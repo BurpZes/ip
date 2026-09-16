@@ -1,5 +1,6 @@
 package wally;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,6 +51,8 @@ public class Parser {
             return e.getMessage();
         } catch (DuplicateTaskException e) {
             return e.getMessage();
+        } catch (DateTimeParseException e) {
+            return "Invalid date or time. Use a valid date and time in yyyy-MM-dd HH:mm format.";
         } catch (IndexOutOfBoundsException e) {
             return "Enter an index between 1 and " + tasklist.getSize();
         } catch (EmptyTaskingsException e) {
