@@ -17,11 +17,15 @@ public class Event extends Task {
      * @param name Name of the task.
      * @param starting Start time in the expected date-time format.
      * @param ending End time in the expected date-time format.
+     * @throws InvalidEventException If the start is not strictly before the end.
      */
-    public Event(String name, String starting, String ending) {
+    public Event(String name, String starting, String ending) throws InvalidEventException {
         super(name);
         this.starting = LocalDateTime.parse(starting, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.ending = LocalDateTime.parse(ending, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        if (!this.starting.isBefore(this.ending)) {
+            throw new InvalidEventException("Event start must be before end.");
+        }
     }
 
     @Override

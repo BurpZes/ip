@@ -30,7 +30,7 @@ public class ParserTest {
     }
 
     @Test
-    public void processCommand_scheduleCommand_ordersDatedTasksBeforeTodos() {
+    public void processCommand_scheduleCommand_ordersDatedTasksBeforeTodos() throws InvalidEventException {
         Tasklist tasklist = new Tasklist();
         tasklist.addTask(new ToDo("write report"));
         tasklist.addTask(new Deadline("submit assignment", "2026-09-14 23:59"));
@@ -42,5 +42,26 @@ public class ParserTest {
                 + "\n1. [T][ ] write report";
 
         assertEquals(expected, Parser.processCommand("schedule", tasklist));
+    }
+
+    @Test
+    public void processCommand_eventStartNotBeforeEnd_rejectsWithoutAddingTask() {
+        Tasklist tasklist = new Tasklist();
+        tasklist.addTask(new ToDo("existing task"));
+        for (String end : new String[] {"2026-09-12 10:00", "2026-09-12 09:00", "2026-09-11 11:00"}) {
+            assertEquals("Event start must be before end.", Parser.processCommand(
+                    "event meeting /from 2026-09-12 10:00 /to " + end, tasklist));
+            assertEquals(1, tasklist.getSize());
+            assertEquals("[T][ ] existing task", tasklist.getTask(1).toString());
+        }
+    }
+
+    @Test
+    public void processCommand_eventAcrossMidnight_addsTask() {
+        Tasklist tasklist = new Tasklist();
+        Parser.processCommand("event night shift /from 2026-09-12 23:00 /to 2026-09-13 01:00", tasklist);
+        assertEquals(1, tasklist.getSize());
+        assertEquals("[E][ ] night shift (from: 12 Sep 2026, 23:00 to: 13 Sep 2026, 01:00)",
+                tasklist.getTask(1).toString());
     }
 }

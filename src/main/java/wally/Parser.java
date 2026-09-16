@@ -47,8 +47,7 @@ public class Parser {
         } catch (InvalidDeadlineException e) {
             return "Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>";
         } catch (InvalidEventException e) {
-            return "Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm>"
-                    + " /to <date: yyyy-MM-dd> <time: HH:mm>";
+            return e.getMessage();
         } catch (IndexOutOfBoundsException e) {
             return "Enter an index between 1 and " + tasklist.getSize();
         } catch (EmptyTaskingsException e) {
@@ -64,7 +63,7 @@ public class Parser {
      * @return Response for the executed command.
      * @throws InvalidCommandException  If the command is unsupported.
      * @throws InvalidDeadlineException If a deadline command has an invalid format.
-     * @throws InvalidEventException    If an event command has an invalid format.
+     * @throws InvalidEventException    If an event command has an invalid format or time range.
      * @throws EmptyTaskingsException   If an indexed operation is attempted on an
      *                                  empty list.
      */
