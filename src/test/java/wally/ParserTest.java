@@ -5,7 +5,84 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+/** Tests command routing, responses, and validation through the parser's public API. */
 public class ParserTest {
+    @Test
+    public void processCommand_emptyListAndSchedule_returnsHeaders() {
+        Tasklist tasks = new Tasklist();
+        assertEquals("Here are the tasks in your list:", Parser.processCommand("list", tasks));
+        assertEquals("Here are the tasks in your schedule:", Parser.processCommand("schedule", tasks));
+    }
+
+    @Test
+    public void processCommand_addAndList_preservesInsertionOrder() {
+        Tasklist tasks = new Tasklist();
+        assertEquals("The following task has been added:\n[T][ ] read\nNow you have 1 tasks in the list.",
+                Parser.processCommand("todo read", tasks));
+        assertEquals("The following task has been added:\n[D][ ] submit (by: 14 Sep 2026, 12:00)"
+                + "\nNow you have 2 tasks in the list.",
+                Parser.processCommand("deadline submit /by 2026-09-14 12:00", tasks));
+        assertEquals("The following task has been added:"
+                + "\n[E][ ] meet (from: 12 Sep 2026, 10:00 to: 12 Sep 2026, 11:00)"
+                + "\nNow you have 3 tasks in the list.",
+                Parser.processCommand("event meet /from 2026-09-12 10:00 /to 2026-09-12 11:00", tasks));
+        assertEquals("Here are the tasks in your list:\n1. [T][ ] read"
+                + "\n2. [D][ ] submit (by: 14 Sep 2026, 12:00)"
+                + "\n3. [E][ ] meet (from: 12 Sep 2026, 10:00 to: 12 Sep 2026, 11:00)",
+                Parser.processCommand("list", tasks));
+    }
+
+    @Test
+    public void processCommand_markUnmarkAndDelete_updatesTaskAndResponse() {
+        Tasklist tasks = new Tasklist();
+        Parser.processCommand("todo read", tasks);
+        assertEquals("The following task has been marked as done:\n[T][X] read",
+                Parser.processCommand("mark 1", tasks));
+        assertEquals("The following task has been marked as not done yet:\n[T][ ] read",
+                Parser.processCommand("unmark 1", tasks));
+        assertEquals("The following task has been removed:\n[T][ ] read\nNow you have 0 tasks in the list.",
+                Parser.processCommand("delete 1", tasks));
+        assertEquals(0, tasks.getSize());
+    }
+
+    @Test
+    public void processCommand_find_matchesCaseInsensitivelyAndKeepsOriginalNumbers() {
+        Tasklist tasks = new Tasklist();
+        Parser.processCommand("todo write", tasks);
+        Parser.processCommand("todo Read book", tasks);
+        Parser.processCommand("todo read notes", tasks);
+        assertEquals("Here are the matching tasks in your list:\n2.[T][ ] Read book\n3.[T][ ] read notes",
+                Parser.processCommand("find READ", tasks));
+        assertEquals("Here are the matching tasks in your list:", Parser.processCommand("find missing", tasks));
+    }
+
+    @Test
+    public void processCommand_invalidIndices_returnsErrorsWithoutMutation() {
+        Tasklist tasks = new Tasklist();
+        for (String command : new String[] {"mark", "unmark", "delete"}) {
+            assertEquals("You have no tasklist yet!", Parser.processCommand(command + " 1", tasks));
+        }
+        Parser.processCommand("todo read", tasks);
+        for (String command : new String[] {"mark", "unmark", "delete"}) {
+            assertEquals("Enter an index between 1 and 1", Parser.processCommand(command + " 0", tasks));
+            assertEquals("Enter an index between 1 and 1", Parser.processCommand(command + " 2", tasks));
+        }
+        assertEquals("Here are the tasks in your list:\n1. [T][ ] read", Parser.processCommand("list", tasks));
+    }
+
+    @Test
+    public void processCommand_invalidCommandOrFormat_returnsHelpfulErrors() {
+        Tasklist tasks = new Tasklist();
+        assertEquals("Invalid Command Entered!", Parser.processCommand("unknown", tasks));
+        assertEquals("Invalid Command Entered!", Parser.processCommand("", tasks));
+        assertEquals("Format: deadline <name> /by <date: yyyy-MM-dd> <time: HH:mm>",
+                Parser.processCommand("deadline read /by tomorrow", tasks));
+        assertEquals("Format: event <name> /from <date: yyyy-MM-dd> <time: HH:mm>"
+                + " /to <date: yyyy-MM-dd> <time: HH:mm>", Parser.processCommand("event read", tasks));
+        assertThrows(AssertionError.class, () -> Parser.processCommand(null, tasks));
+        assertEquals(0, tasks.getSize());
+    }
+
     @Test
     public void processCommand_invalidDateTimes_returnsErrorWithoutAddingTasks() {
         Tasklist tasklist = new Tasklist();

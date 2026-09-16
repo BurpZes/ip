@@ -1,5 +1,6 @@
 package wally;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -9,7 +10,17 @@ import java.util.Locale;
  */
 public class Wally {
     private final Tasklist tasks = new Tasklist();
-    private final Save save = new Save(tasks);
+    private final Save save;
+
+    /** Creates a chatbot using the default save file. */
+    public Wally() {
+        save = new Save(tasks);
+    }
+
+    /** Creates a chatbot using an isolated save file. */
+    Wally(Path saveFile) {
+        save = new Save(tasks, saveFile);
+    }
 
     /**
      * Returns a greeting with today's local date followed by the saved task schedule.
