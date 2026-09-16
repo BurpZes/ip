@@ -1,5 +1,7 @@
 package wally;
 
+import java.io.IOException;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,20 +44,28 @@ public class MainWindow extends AnchorPane {
      */
     public void setWally(Wally wally) {
         this.wally = wally;
+        applyBackground(wally.getBackgroundColour());
         dialogContainer.getChildren().add(DialogBox.getWallyDialog(wally.getStartupMessage(), wallyImage));
     }
 
     /** Applies a supported background colour or returns the validation error. */
     private String changeBackground(String colour) {
         try {
-            String background = Parser.parseBackgroundColour(colour);
-            String textColour = background.equals("black") ? "white" : "black";
-            scrollPane.getScene().getRoot().setStyle("-wally-background: " + background
-                    + "; -wally-text: " + textColour + ";");
+            String background = wally.changeBackgroundColour(colour);
+            applyBackground(background);
             return "Background changed to " + (background.equals("lightblue") ? "light blue" : background) + ".";
         } catch (InvalidBackgroundColourException e) {
             return e.getMessage();
+        } catch (IOException e) {
+            return "Could not save the background colour. Check that the save folder is writable.";
         }
+    }
+
+    /** Applies the background and a readable text colour to the window. */
+    private void applyBackground(String background) {
+        String textColour = background.equals("black") ? "white" : "black";
+        scrollPane.getScene().getRoot().setStyle("-wally-background: " + background
+                + "; -wally-text: " + textColour + ";");
     }
 
     /**

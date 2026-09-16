@@ -1,5 +1,6 @@
 package wally;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,25 @@ public class Wally {
     /** Creates a chatbot using an isolated save file. */
     Wally(Path saveFile) {
         save = new Save(tasks, saveFile);
+    }
+
+    /** Returns the saved background colour, or light blue when no valid setting exists. */
+    public String getBackgroundColour() {
+        return save.loadBackground();
+    }
+
+    /**
+     * Validates and persists a background choice before the GUI applies it.
+     *
+     * @param colour User-provided colour name.
+     * @return Validated CSS colour name.
+     * @throws InvalidBackgroundColourException If the colour is unsupported.
+     * @throws IOException If the setting cannot be saved.
+     */
+    public String changeBackgroundColour(String colour) throws InvalidBackgroundColourException, IOException {
+        String background = Parser.parseBackgroundColour(colour);
+        save.saveBackground(background);
+        return background;
     }
 
     /**

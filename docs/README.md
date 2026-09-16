@@ -191,7 +191,8 @@ For `background light blue`, the response is:
 Background changed to light blue.
 ```
 
-The background returns to light blue when Wally restarts.
+The selected background is saved immediately and restored when Wally restarts.
+Light blue is used when no valid saved colour is available.
 
 ## Exiting Wally
 
@@ -211,7 +212,9 @@ example `C:\wally\Saves\save.txt`. Wally needs permission to create and write th
 location. File errors are printed in the terminal.
 
 Currently, completion status is not saved: tasks load as incomplete after a
-restart. Background colour is not saved either. Back up the save file before
+restart. Background colour is stored separately in `background.txt` beside the
+task save file. If Wally cannot save a colour, it displays an error and keeps the
+current background. Back up the save file before
 editing it manually; invalid or duplicate task entries are skipped on load.
 
 ## Handling errors

@@ -1,6 +1,7 @@
 package wally;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -16,6 +17,48 @@ import org.junit.jupiter.api.io.TempDir;
 public class WallyTest {
     @TempDir
     private Path directory;
+
+    @Test
+    public void changeBackgroundColour_supportedColours_surviveRestart() throws Exception {
+        Path file = directory.resolve("save.txt");
+        Wally wally = new Wally(file);
+        assertEquals("lightblue", wally.getBackgroundColour());
+        wally.getResponse("todo read");
+        for (String colour : new String[] {"black", "white", "light blue", "blue"}) {
+            String expected = colour.contains("blue") ? "lightblue" : colour;
+            assertEquals(expected, wally.changeBackgroundColour(colour));
+            Wally restarted = new Wally(file);
+            assertEquals(expected, restarted.getBackgroundColour());
+            restarted.getResponse("list");
+            assertEquals(expected, new Wally(file).getBackgroundColour());
+            assertEquals("todo read\n", Files.readString(file));
+        }
+    }
+
+    @Test
+    public void changeBackgroundColour_invalidChoice_preservesSavedColour() throws Exception {
+        Wally wally = new Wally(directory.resolve("save.txt"));
+        wally.changeBackgroundColour("black");
+        assertThrows(InvalidBackgroundColourException.class, () -> wally.changeBackgroundColour("red"));
+        assertEquals("black", new Wally(directory.resolve("save.txt")).getBackgroundColour());
+    }
+
+    @Test
+    public void background_corruptSetting_fallsBackAndCanBeReplaced() throws Exception {
+        Path file = directory.resolve("save.txt");
+        Files.writeString(directory.resolve("background.txt"), "invalid colour");
+        Wally wally = new Wally(file);
+        assertEquals("lightblue", wally.getBackgroundColour());
+        wally.changeBackgroundColour("white");
+        assertEquals("white", new Wally(file).getBackgroundColour());
+    }
+
+    @Test
+    public void changeBackgroundColour_unwritableSetting_reportsFailure() throws Exception {
+        Wally wally = new Wally(directory.resolve("save.txt"));
+        Files.createDirectory(directory.resolve("background.txt"));
+        assertThrows(java.io.IOException.class, () -> wally.changeBackgroundColour("black"));
+    }
 
     @Test
     public void getResponse_commands_returnsResponsesAndPersistsChanges() throws Exception {

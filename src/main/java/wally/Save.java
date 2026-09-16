@@ -58,4 +58,28 @@ public class Save {
             System.out.println("Exception caught: " + e);
         }
     }
+
+    /** Loads a supported background colour, falling back to light blue if unavailable. */
+    public String loadBackground() {
+        Path file = saveFile.resolveSibling("background.txt");
+        if (!Files.isRegularFile(file)) {
+            return "lightblue";
+        }
+        try {
+            return Parser.parseBackgroundColour(Files.readString(file));
+        } catch (IOException | InvalidBackgroundColourException e) {
+            return "lightblue";
+        }
+    }
+
+    /**
+     * Saves a validated background colour beside the task file.
+     *
+     * @param colour Supported colour in CSS form.
+     * @throws IOException If the setting cannot be written.
+     */
+    public void saveBackground(String colour) throws IOException {
+        Files.writeString(saveFile.resolveSibling("background.txt"),
+                colour.equals("lightblue") ? "light blue" : colour);
+    }
 }
