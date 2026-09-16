@@ -57,7 +57,9 @@ public class DialogBox extends HBox {
      * @return Dialog box containing the user message.
      */
     public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+        DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.dialog.setStyle("-fx-background-color: #2563eb; -fx-text-fill: white; -fx-padding: 8 12;");
+        return dialogBox;
     }
 
     /**
