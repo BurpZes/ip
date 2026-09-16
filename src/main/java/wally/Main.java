@@ -22,6 +22,8 @@ public class Main extends Application {
             Scene scene = new Scene(anchorPane);
             stage.setScene(scene);
             stage.setTitle("Wally");
+            stage.setWidth(1280);
+            stage.setHeight(720);
             fxmlLoader.<MainWindow>getController().setWally(wally);
             stage.show();
         } catch (IOException e) {

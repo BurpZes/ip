@@ -9,6 +9,6 @@
     -fx-text-fill: -wally-text;
 }
 .root {
-    -wally-background: black;
-    -wally-text: white;
+    -wally-background: lightblue;
+    -wally-text: black;
 }
