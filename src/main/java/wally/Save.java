@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  */
 public class Save {
     private static final String SAVE_FILE_PATH = "/wally/Saves/save.txt";
-    private static final Path SAVE_FILE = Path.of(SAVE_FILE_PATH);
+    private final Path saveFile;
 
     /**
      * Loads the task list stored in Saves/save.txt.
@@ -19,16 +19,22 @@ public class Save {
      * @param tasklist Task list to load into.
      */
     public Save(Tasklist tasklist) {
-        if (Files.isRegularFile(SAVE_FILE)) {
-            try (Stream<String> lines = Files.lines(SAVE_FILE)) {
+        this(tasklist, Path.of(SAVE_FILE_PATH));
+    }
+
+    /** Loads tasks from a specified file, allowing isolated storage in tests. */
+    Save(Tasklist tasklist, Path saveFile) {
+        this.saveFile = saveFile;
+        if (Files.isRegularFile(saveFile)) {
+            try (Stream<String> lines = Files.lines(saveFile)) {
                 lines.forEach(command -> Parser.processCommand(command, tasklist));
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
         } else {
             try {
-                Files.createDirectories(SAVE_FILE.getParent());
-                Files.createFile(SAVE_FILE);
+                Files.createDirectories(saveFile.toAbsolutePath().getParent());
+                Files.createFile(saveFile);
             } catch (IOException e) {
                 System.out.println("Exception caught: " + e);
             }
@@ -47,7 +53,7 @@ public class Save {
             contents += "\n";
         }
         try {
-            Files.writeString(SAVE_FILE, contents);
+            Files.writeString(saveFile, contents);
         } catch (IOException e) {
             System.out.println("Exception caught: " + e);
         }
