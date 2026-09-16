@@ -206,10 +206,17 @@ No additional chat message is displayed.
 Wally automatically writes tasks after processing task commands and loads them
 when it starts. No separate save command is needed.
 
-The save location is `/wally/Saves/save.txt`, rooted at the filesystem root rather
-than inside the project folder. On Windows it resolves on the current drive, for
-example `C:\wally\Saves\save.txt`. Wally needs permission to create and write this
-location. File errors are printed in the terminal.
+The save location is `./wally/Saves/save.txt`, relative to the working directory
+from which Wally is launched. When launched from the project folder, this is
+`wally/Saves/save.txt` inside the project. When running the JAR from a terminal,
+it is relative to the terminal's current folder, not necessarily the JAR's folder.
+Launch Wally from the same folder each time to use the same saved tasks.
+
+Wally creates the save folder and file if they do not exist and needs permission
+to write there. File errors are printed in the terminal. Saves from the previous
+root-level location are not moved automatically. To keep them, close Wally and
+copy the old `save.txt` and `background.txt` into the new `wally/Saves` folder,
+backing up any existing files first.
 
 Completion status is saved and restored on restart. Completed entries have an
 `[X] ` prefix in the save file; older entries without this prefix load as incomplete.
