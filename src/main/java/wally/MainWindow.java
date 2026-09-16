@@ -35,12 +35,13 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Sets the chatbot that processes user input.
+     * Sets the chatbot that processes user input and displays its startup message.
      *
      * @param wally Chatbot instance.
      */
     public void setWally(Wally wally) {
         this.wally = wally;
+        dialogContainer.getChildren().add(DialogBox.getWallyDialog(wally.getStartupMessage(), wallyImage));
     }
 
     /**

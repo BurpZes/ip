@@ -2,6 +2,7 @@ package wally;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Stores a task with a description, start date-time, and end date-time.
@@ -26,8 +27,8 @@ public class Event extends Task {
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: "
-                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm"))
-                + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
+                + this.starting.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH))
+                + " to: " + this.ending.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)) + ")";
     }
 
     @Override

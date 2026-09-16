@@ -2,6 +2,7 @@ package wally;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Stores a task with a description and deadline.
@@ -23,7 +24,7 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: "
-                + this.endDate.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm")) + ")";
+                + this.endDate.format(DateTimeFormatter.ofPattern("d MMM yyyy, HH:mm", Locale.ENGLISH)) + ")";
     }
 
     @Override
