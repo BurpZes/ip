@@ -1,5 +1,6 @@
 package wally;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -58,9 +59,8 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing
-     * Duke's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Processes user input and exits the application when Wally signals termination.
+     * Otherwise, displays the input and Wally's reply and clears the input field.
      */
     @FXML
     private void handleUserInput() {
@@ -71,6 +71,10 @@ public class MainWindow extends AnchorPane {
             response = changeBackground(commandParts.length == 2 ? commandParts[1] : "");
         } else {
             response = wally.getResponse(input);
+        }
+        if ("TERMINATE_PROGRAM".equals(response)) {
+            Platform.exit();
+            return;
         }
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
