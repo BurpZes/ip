@@ -262,3 +262,9 @@ followed by a space inside their corresponding task descriptions. Avoid `/by`,
 | Delete a task | `delete <number>` |
 | Change background | `background <black/white/light blue>` |
 | Exit | `bye` |
+
+## Disclosure of AI Usage
+AI was used to generate:
+- JUnit tests
+- Error handling
+- README
